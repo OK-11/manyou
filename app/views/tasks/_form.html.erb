@@ -1,0 +1,15 @@
+<%= form_with(model: task , local: true) do |form| %>
+  
+  <div><%= form.label :title , "Title" %></div>
+  <div><%= form.text_field :title %></div>
+
+  <div><%= form.label :content , "Content" %></div>
+  <div><%= form.text_area :content %></div>
+  
+  
+  <div><%= form.submit submit_name  , id: submit_id %></div>
+  
+  
+  <div><%= link_to "Back" ,  tasks_path , id: "back" %></div>
+  
+<% end %>
