@@ -14,7 +14,6 @@ class TasksController < ApplicationController
       flash[:notice] = "Task was successfully created."
       redirect_to tasks_path
     else
-      flash[:alert] = "失敗"
       render :new
     end
   end
@@ -30,7 +29,6 @@ class TasksController < ApplicationController
       flash[:notice] = "Task was successfully updated."
       redirect_to task_path(@task)
     else
-      flash[:alert] = "失敗"
       render :edit
     end
   end
@@ -40,7 +38,6 @@ class TasksController < ApplicationController
       flash[:notice] = "Task was successfully destroyed."
       redirect_to tasks_path
     else
-      flash[:alert] = "失敗"
       redirect_to tasks_path
     end
   end
