@@ -15,7 +15,7 @@ class TasksController < ApplicationController
       redirect_to tasks_path
     else
       flash[:alert] = "失敗"
-      redirect_to new_task_path
+      render :new
     end
   end
 
@@ -31,7 +31,7 @@ class TasksController < ApplicationController
       redirect_to task_path(@task)
     else
       flash[:alert] = "失敗"
-      redirect_to edit_task_path
+      render :edit
     end
   end
 
