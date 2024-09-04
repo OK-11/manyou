@@ -28,7 +28,7 @@ class TasksController < ApplicationController
   def update
     if @task.update(task_params)
       flash[:notice] = "Task was successfully updated."
-      redirect_to tasks_path
+      redirect_to task_path(@task)
     else
       flash[:alert] = "失敗"
       redirect_to edit_task_path
