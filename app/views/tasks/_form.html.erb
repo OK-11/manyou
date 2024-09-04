@@ -5,9 +5,8 @@
       <h2><%= pluralize(task.errors.count, "error") %> prohibited this user from being saved:</h2>
 
       <ul>
-        <% task.errors.each do |error| %>
-          <li><%= error %></li>
-
+        <%- task.errors.each do |error| %>
+          <li><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
