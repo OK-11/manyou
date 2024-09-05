@@ -12,16 +12,16 @@
     </div>
   <% end %>
   
-  <div><%= form.label :title , "Title" %></div>
+  <div><%= form.label :title , t("tasks.form.Title") %></div>
   <div><%= form.text_field :title %></div>
 
-  <div><%= form.label :content , "Content" %></div>
+  <div><%= form.label :content , t("tasks.form.Content") %></div>
   <div><%= form.text_area :content %></div>
   
   
   <div><%= form.submit submit_name  , id: submit_id %></div>
   
   
-  <div><%= link_to "Back" ,  tasks_path , id: "back" %></div>
+  <div><%= link_to t("tasks.form.Back") ,  tasks_path , id: "back" %></div>
   
 <% end %>
