@@ -1,5 +1,5 @@
 <%= render "nav" %>
 
-<h1>Edit Task Page</h1>
+<h1><%= t(".Edit Task") %></h1>
 
-<%= render "form" , task: @task , submit_name: "Update Task" , submit_id: "update-task" %>
+<%= render "form" , task: @task , submit_name: t("tasks.edit.Update Task") , submit_id: "update-task" %>

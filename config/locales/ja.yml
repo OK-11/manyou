@@ -1,0 +1,65 @@
+ja:
+  tasks:
+    nav:
+      Tasks Index: "タスク一覧"
+      New Task: "タスクを登録する"
+    form:
+      Title: "タイトル"
+      Content: "内容"
+      Back: "戻る"
+    index:
+      Tasks Index: "タスク一覧ページ"
+      Title: "タイトル"
+      Content: "内容"
+      Created_at: "作成日時"
+      Show: "詳細"
+      Edit: "編集"
+      Destroy: "削除"
+      Are you sure?: "本当に削除してもよろしいですか？"
+    new:
+      New Task: "タスク登録ページ"
+      Create Task: "登録する"
+    show:
+      Show Task: "タスク詳細ページ"
+      Title: "タイトル"
+      Content: "内容"
+      Created_at: "作成日時"
+      Edit: "編集"
+      Back: "戻る"
+    edit:
+      Edit Task: "タスク編集ページ"
+      Update Task: "更新する"
+
+  activerecord:
+    models:
+      task: "タスク"
+    attributes:
+      task:
+        title: "タイトル"
+        content: "内容"
+    errors:
+      models:
+        task:
+          attributes:
+            title:
+              blank: "タイトルを入力してください"
+            content:
+              blank: "内容を入力してください"
+
+  flash:
+    actions:
+      create:
+        notice: "タスクを登録しました"
+      update:
+        notice: "タスクを更新しました"
+      destroy:
+        notice: "タスクを削除しました"
+
+
+
+
+
+
+    
+      
+
