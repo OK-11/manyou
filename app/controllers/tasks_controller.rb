@@ -1,8 +1,37 @@
 class TasksController < ApplicationController
   before_action :set_task , only: [:show, :edit, :update, :destroy]
   def index
-    @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
-    
+    if params[:search].present?
+      status = params[:search][:status]
+      title = params[:search][:title]
+
+      if status.present? && title.present?
+        @tasks = Task.search_status(status).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+      elsif status.present?
+        @tasks = Task.search_status(status).order(created_at: :desc).page(params[:page]).per(10)
+      elsif title.present?
+        @tasks = Task.search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+      else
+        @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+      end
+      
+    elsif params[:sort_deadline_on].present?
+      if params[:sort_deadline_on] == "true"
+        @tasks = Task.order(:deadline_on).page(params[:page]).per(10)
+      else
+        @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+      end
+
+    elsif params[:sort_priority].present?
+      if params[:sort_priority] == "true"
+        @tasks = Task.order(priority: :desc).page(params[:page]).per(10)
+      else
+        @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+      end
+      
+    else
+      @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+    end
   end
 
   def new
@@ -49,7 +78,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:title, :content)
+    params.require(:task).permit(:title, :content, :deadline_on, :priority, :status)
   end
 
   def set_task
