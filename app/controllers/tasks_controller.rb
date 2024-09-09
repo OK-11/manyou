@@ -17,14 +17,14 @@ class TasksController < ApplicationController
       
     elsif params[:sort_deadline_on].present?
       if params[:sort_deadline_on] == "true"
-        @tasks = Task.order(:deadline_on).page(params[:page]).per(10)
+        @tasks = Task.order(:deadline_on, created_at: :desc).page(params[:page]).per(10)
       else
         @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
       end
 
     elsif params[:sort_priority].present?
       if params[:sort_priority] == "true"
-        @tasks = Task.order(priority: :desc).page(params[:page]).per(10)
+        @tasks = Task.order(priority: :desc, created_at: :desc).page(params[:page]).per(10)
       else
         @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
       end

@@ -57,7 +57,7 @@ RSpec.describe 'タスク管理機能', type: :system do
           expect(page).to have_selector('.task_title', count: 4)
           @task_list_sort = all('.task_title')
           @task_list_sort_text = @task_list_sort.map{ |task| task.text }
-          expect(@task_list_sort_text).to eq ["second_task", "first_task", "書類作成", "third_task"]
+          expect(@task_list_sort_text).to eq ["second_task", "書類作成", "first_task", "third_task"]
         end
       end
     end
