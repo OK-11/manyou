@@ -6,4 +6,8 @@
 <label><%= t(".Content") %></label><%= @task.content %>
 <label><%= t(".Created_at") %></label><%= @task.created_at %>
 
+<label>終了期限</label><%= @task.deadline_on %>
+<label>優先度</label><%= @task.priority %>
+<label>ステータス</label><%= @task.status %>
+
 <%= link_to t(".Edit") , edit_task_path(@task), id: "edit-task" %> | <%= link_to t(".Back") ,  tasks_path , id: "back" %>

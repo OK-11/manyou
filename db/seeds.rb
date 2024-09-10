@@ -9,11 +9,13 @@
 
 require 'faker'
 
-50.times do
+10.times do
   Task.create(
     title: Faker::Lorem.sentence(word_count: 3),  # 例: "Sample Task Title"
     content: Faker::Lorem.paragraph,             # 例: "This is the content of the task."
     created_at: Faker::Time.backward(days: 365), # 例: 過去 1 年間のランダムな時間
-    updated_at: Faker::Time.backward(days: 30)   # 例: 過去 30 日間のランダムな時間
+    deadline_on: Faker::Date.between(from: 6.months.ago, to: 6.months.from_now), # 例: 今日から 30 日後のランダムな日付
+    priority: Faker::Number.between(from: 0, to: 2),
+    status: Faker::Number.between(from: 0, to: 2)
   )
 end
