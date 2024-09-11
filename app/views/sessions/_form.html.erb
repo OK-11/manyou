@@ -1,0 +1,12 @@
+<%= form_with(scope: :session, url: sessions_path, local: true) do |form| %>
+
+  <div><%= form.label :email , "メールアドレス" %></div>
+  <div><%= form.text_field :email %></div>
+
+  <div><%= form.label :password , "パスワード" %></div>
+  <div><%= form.text_field :password %></div>
+
+  <%= form.submit "ログイン" , id: "create-session" %>
+
+
+<% end %>

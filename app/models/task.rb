@@ -8,8 +8,8 @@ class Task < ApplicationRecord
   enum priority: {低: 0, 中: 1, 高: 2}
   enum status: {未着手: 0, 着手中: 1, 完了: 2}
 
-  scope :active, -> { where(active: true) }
-
   scope :search_status, -> (status) { where(status: status) }
   scope :search_title, -> (title) { where("title LIKE ?" , "%#{title}%") }
+
+  belongs_to :user
 end

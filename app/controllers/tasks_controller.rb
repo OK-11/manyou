@@ -1,45 +1,50 @@
 class TasksController < ApplicationController
   before_action :set_task , only: [:show, :edit, :update, :destroy]
+  before_action :check_mytask , only: [:show, :edit, :update, :destroy]
   def index
+    @user = User.find(session[:user_id])
+
     if params[:search].present?
       status = params[:search][:status]
       title = params[:search][:title]
 
       if status.present? && title.present?
-        @tasks = Task.search_status(status).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+        @tasks = @user.tasks.search_status(status).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
       elsif status.present?
-        @tasks = Task.search_status(status).order(created_at: :desc).page(params[:page]).per(10)
+        @tasks = @user.tasks.search_status(status).order(created_at: :desc).page(params[:page]).per(10)
       elsif title.present?
-        @tasks = Task.search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+        @tasks = @user.tasks.search_title(title).order(created_at: :desc).page(params[:page]).per(10)
       else
-        @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+        @tasks = @user.tasks.order(created_at: :desc).page(params[:page]).per(10)
       end
       
     elsif params[:sort_deadline_on].present?
       if params[:sort_deadline_on] == "true"
-        @tasks = Task.order(:deadline_on, created_at: :desc).page(params[:page]).per(10)
+        @tasks = @user.tasks.order(:deadline_on, created_at: :desc).page(params[:page]).per(10)
       else
-        @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+        @tasks = @user.tasks.order(created_at: :desc).page(params[:page]).per(10)
       end
 
     elsif params[:sort_priority].present?
       if params[:sort_priority] == "true"
-        @tasks = Task.order(priority: :desc, created_at: :desc).page(params[:page]).per(10)
+        @tasks = @user.tasks.order(priority: :desc, created_at: :desc).page(params[:page]).per(10)
       else
-        @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+        @tasks = @user.tasks.order(created_at: :desc).page(params[:page]).per(10)
       end
       
     else
-      @tasks = Task.order(created_at: :desc).page(params[:page]).per(10)
+      @tasks = @user.tasks.order(created_at: :desc).page(params[:page]).per(10)
     end
   end
 
   def new
-    @task = Task.new
+    @user = User.find(session[:user_id])
+    @task = @user.tasks.build
   end
 
   def create
-    @task = Task.new(task_params)
+    @user = User.find(session[:user_id])
+    @task = @user.tasks.build(task_params)
     if @task.save
       flash[:notice] = t("flash.actions.create.notice", default: "Task was successfully created.")      
       redirect_to tasks_path
@@ -82,8 +87,17 @@ class TasksController < ApplicationController
   end
 
   def set_task
-    @task = Task.find(params[:id])
+    @user = User.find(session[:user_id])
+    @task = @user.tasks.find(params[:id])
   end
+
+  def check_mytask
+    unless set_task
+      flash[:alert] = "アクセス権限がありません"
+      redirect_to tasks_path
+    end
+  end
+
 
 end
 

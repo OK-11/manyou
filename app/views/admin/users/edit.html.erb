@@ -1,0 +1,10 @@
+
+
+
+
+<h1>ユーザ編集ページ</h1>
+
+
+<%= render "form" , user: @user , admin_url: admin_user_path(@user) , user_form_id: "update-user" %>
+
+<%= link_to "戻る", user_path(@user), id: "back" %>
