@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   has_secure_password
 
-  validates :name, presence: { message: "名前を入力してください" }
+  validates :name, presence: true
   validates :email, presence: { message: "メールアドレスを入力してください" }
   validates :email, uniqueness: { message: "メールアドレスはすでに使用されています" }
 

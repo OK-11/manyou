@@ -2,7 +2,7 @@ ja:
   tasks:
     nav:
       Tasks Index: "タスク一覧"
-      New Task: "タスクを登録する"
+      New Task: "タスクを登録"
     form:
       Title: "タイトル"
       Content: "内容"
@@ -37,7 +37,15 @@ ja:
       task:
         title: "タイトル"
         content: "内容"
+      user:
+        name: "名前"
+        email: "メールアドレス"
+        password: "パスワード"
+
     errors:
+      format: "%{attribute}%{message}"
+      messages:
+        blank: "を入力してください"
       models:
         task:
           attributes:
@@ -45,6 +53,12 @@ ja:
               blank: "タイトルを入力してください"
             content:
               blank: "内容を入力してください"
+        user:
+          attributes:
+            password_confirmation:
+              confirmation: "パスワード（確認）とパスワードの入力が一致しません"
+            
+
 
   flash:
     actions:

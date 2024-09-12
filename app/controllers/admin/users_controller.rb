@@ -12,7 +12,6 @@ class Admin::UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      session[:user_id] = @user.id
       flash[:notice] =  "ユーザを登録しました"
       redirect_to admin_users_path
     else
@@ -35,14 +34,20 @@ class Admin::UsersController < ApplicationController
       if @user.admin_user_cannot_update
         render :edit
       else
-        @user.update(user_params)
-        flash[:notice] = "ユーザを更新しました"
-        redirect_to admin_user_path
+        if @user.update(user_params)
+          flash[:notice] = "ユーザを更新しました"
+          redirect_to admin_users_path
+        else
+          render :edit
+        end
       end
     else
-      @user.update(user_params)
-      flash[:notice] = "ユーザを更新しました"
-      redirect_to admin_user_path
+      if @user.update(user_params)
+        flash[:notice] = "ユーザを更新しました"
+        redirect_to admin_users_path
+      else
+        render :edit
+      end
     end
   end
 

@@ -30,6 +30,8 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       flash[:notice] = "アカウントを更新しました"
       redirect_to user_path(@user)
+    else
+      render :edit
     end
   end
 
