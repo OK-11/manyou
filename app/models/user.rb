@@ -11,21 +11,19 @@ class User < ApplicationRecord
 
   has_many :tasks , dependent: :destroy
 
-  before_destroy :admin_user_cannot_destroy
-  before_update :admin_user_cannot_update
 
 
   def admin_user_cannot_destroy
     if User.where(admin: true).count == 1 && self.admin?
       errors.add(:base, "管理者が0人になるため削除できません")
-      throw :abort
     end
   end
+
+  before_destroy :admin_user_cannot_destroy
 
   def admin_user_cannot_update
     if User.where(admin: true).count == 1 && self.admin?
       errors.add(:base, "管理者が0人になるため権限を変更できません")
-      throw :abort
     end
   end
 
