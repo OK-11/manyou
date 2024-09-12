@@ -3,17 +3,42 @@ class TasksController < ApplicationController
   before_action :check_mytask , only: [:show, :edit, :update, :destroy]
   def index
     @user = User.find(session[:user_id])
+    @labels = @user.labels.map do |label|
+      label.name
+    end
 
     if params[:search].present?
       status = params[:search][:status]
       title = params[:search][:title]
+      label = params[:search][:label]
 
       if status.present? && title.present?
-        @tasks = @user.tasks.search_status(status).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+
+        if label.present?
+          @tasks = @user.tasks.joins(:labels).where(labels: {name: label}).search_status(status).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+        else
+          @tasks = @user.tasks.search_status(status).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+        end
+        
       elsif status.present?
-        @tasks = @user.tasks.search_status(status).order(created_at: :desc).page(params[:page]).per(10)
+
+        if label.present?
+          @tasks = @user.tasks.joins(:labels).where(labels: {name: label}).search_status(status).order(created_at: :desc).page(params[:page]).per(10)
+        else
+          @tasks = @user.tasks.search_status(status).order(created_at: :desc).page(params[:page]).per(10)
+        end
+
       elsif title.present?
-        @tasks = @user.tasks.search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+
+        if label.present?
+          @tasks = @user.tasks.joins(:labels).where(labels: {name: label}).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+        else
+          @tasks = @user.tasks.search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+        end
+
+      elsif label.present?
+        @tasks = @user.tasks.joins(:labels).where(labels: {name: label}).order(created_at: :desc).page(params[:page]).per(10)
+        
       else
         @tasks = @user.tasks.order(created_at: :desc).page(params[:page]).per(10)
       end
@@ -40,12 +65,21 @@ class TasksController < ApplicationController
   def new
     @user = User.find(session[:user_id])
     @task = @user.tasks.build
+    @labels = @user.labels
   end
 
   def create
     @user = User.find(session[:user_id])
     @task = @user.tasks.build(task_params)
     if @task.save
+
+      if params[:task][:label_ids].present?
+        labels = params[:task][:label_ids]
+        labels.each do |label_id|
+          @task.labels << Label.find(label_id)
+        end
+      end
+
       flash[:notice] = t("flash.actions.create.notice", default: "Task was successfully created.")      
       redirect_to tasks_path
     else
@@ -54,13 +88,25 @@ class TasksController < ApplicationController
   end
 
   def show
+    @labels = @task.labels
   end
 
   def edit
+    @labels = @user.labels
   end
 
   def update
     if @task.update(task_params)
+
+      @task.labels.destroy_all
+
+      if params[:task][:label_ids].present?
+        labels = params[:task][:label_ids]
+        labels.each do |label_id|
+          @task.labels << Label.find(label_id)
+        end
+      end
+
       flash[:notice] = t("flash.actions.update.notice", default: "Task was successfully updated.")
       redirect_to task_path(@task)
     else
