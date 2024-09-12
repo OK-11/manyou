@@ -11,6 +11,9 @@ class User < ApplicationRecord
 
   has_many :tasks , dependent: :destroy
 
+  before_destroy :admin_user_cannot_destroy
+  before_update :admin_user_cannot_update
+
 
   def admin_user_cannot_destroy
     if User.where(admin: true).count == 1 && self.admin?
