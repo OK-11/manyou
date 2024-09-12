@@ -7,13 +7,9 @@ class User < ApplicationRecord
 
   validates :password, presence: { message: "パスワードを入力してください" }
   validates :password, length: { minimum: 6, message: "パスワードは6文字以上で入力してください" }
-  validate :passwords_match
+  
 
   has_many :tasks , dependent: :destroy
-
-
-
-
 
 
   def admin_user_cannot_destroy
@@ -30,11 +26,4 @@ class User < ApplicationRecord
     end
   end
 
-
-  private
-  def passwords_match
-    if password != password_confirmation
-      errors.add(:password_confirmation, "パスワード（確認）とパスワードの入力が一致しません")
-    end
-  end
 end

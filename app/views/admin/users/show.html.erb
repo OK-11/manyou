@@ -2,7 +2,14 @@
 
 <div><label>名前:</label><%= @user.name %></div>
 <div><label>メールアドレス:</label><%= @user.email %></div>
-<div><label>管理者権限:</label><%= @user.admin %></div>
+<div>
+  <label>管理者権限:</label>
+  <% if @user.admin == true %>
+    <p>あり</p>
+  <% else %>
+    <p>なし</p>
+  <% end %>
+</div>
 
 <table>
   <thead>
