@@ -30,36 +30,29 @@ class Admin::UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    if params[:user][:admin] == false
-      if @user.admin_user_cannot_update
-        render :edit
-      else
-        if @user.update(user_params)
-          flash[:notice] = "ユーザを更新しました"
-          redirect_to admin_users_path
-        else
-          render :edit
-        end
-      end
+    
+    if @user.update(user_params)
+      flash[:notice] = "ユーザを更新しました"
+      redirect_to admin_users_path
     else
-      if @user.update(user_params)
-        flash[:notice] = "ユーザを更新しました"
-        redirect_to admin_users_path
-      else
-        render :edit
-      end
+      flash[:alert] = "管理者が0人になるため権限を変更できません"
+      render :edit
     end
+  
   end
+    
 
   def destroy
     @user = User.find(params[:id])
-    if @user.admin_user_cannot_destroy
-      render :index
-      
-    else
-      @user.destroy
+    if @user.destroy
+     
       flash[:notice] = "ユーザを削除しました"
       redirect_to admin_users_path
+      
+    else
+      flash[:alert] = "管理者が0人になるため削除できません"
+      @users = User.includes(:tasks).all
+      render :index
     end
   end
 

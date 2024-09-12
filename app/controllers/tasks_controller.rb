@@ -88,7 +88,7 @@ class TasksController < ApplicationController
 
   def set_task
     @user = User.find(session[:user_id])
-    @task = @user.tasks.find(params[:id])
+    @task = @user.tasks.find_by(id: params[:id])
   end
 
   def check_mytask
