@@ -28,6 +28,12 @@
   <div><%= form.label :status , "ステータス" %></div>
   <div><%= form.select :status , ["未着手", "着手中", "完了"], include_blank: "" %></div>
 
+
+  
+  <div><label>ラベル</label></div>
+  <% @labels.each do |label| %>
+    <%= form.check_box :label_ids, { multiple: true }, label.id, nil %><%= label.name %>
+  <% end %>
   
   
   

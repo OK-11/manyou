@@ -1,0 +1,21 @@
+<h1>ラベル一覧ページ</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>名前</th>
+      <th>タスク数</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @labels.each do |label| %>
+      <tr>
+        <td><%= label.name %></td>
+        <td><%= @user.labels.joins(:tasks).where(labels: { name: label.name }).count %></td>
+        <td><%= link_to "編集" , edit_label_path(label), class: "edit-label" %></td>
+        <td><%= link_to "削除" , label_path(label), class: "destroy-label" , method: :delete , data: { confirm: "本当に削除してもよろしいですか？" } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

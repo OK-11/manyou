@@ -10,6 +10,7 @@ class User < ApplicationRecord
   
 
   has_many :tasks , dependent: :destroy
+  has_many :labels
 
   before_destroy :admin_user_cannot_destroy
   before_update :admin_user_cannot_update

@@ -3,6 +3,9 @@ require 'rails_helper'
 RSpec.describe 'タスク管理機能', type: :system do
 
   let(:user) { User.create(name: "test", email: "test@test", password: "password", password_confirmation: "password", admin: false) }
+  let!(:admin) { User.create(name: "admin", email: "admin@admin", password: "password", password_confirmation: "password", admin: true) }
+  let!(:label) { Label.create(name: "label" , user: user) }
+  let!(:label2) { Label.create(name: "label2" , user: user) }
   let!(:first_task) { FactoryBot.create(:first_task, user: user) }
   let!(:second_task) { FactoryBot.create(:second_task, user: user) }
   let!(:third_task) { FactoryBot.create(:third_task, user: user) }
@@ -121,6 +124,25 @@ RSpec.describe 'タスク管理機能', type: :system do
       it 'そのタスクの内容が表示される' do
       click_link("詳細", match: :first)
       expect(page).to have_content "first_task"
+      end
+    end
+  end
+
+  describe '検索機能' do
+    before do
+      label.tasks << first_task
+      visit new_session_path
+      fill_in 'メールアドレス', with: 'test@test'
+      fill_in 'パスワード', with: 'password'
+      click_button "ログイン"
+    end
+    context 'ラベルで検索をした場合' do
+      it "そのラベルの付いたタスクがすべて表示される" do
+        # toとnot_toのマッチャを使って表示されるものとされないものの両方を確認する
+        select "label", from: "ラベル"
+        click_button "検索"
+        expect(page).to have_content "first_task"
+        expect(page).not_to have_content "second_task"
       end
     end
   end
