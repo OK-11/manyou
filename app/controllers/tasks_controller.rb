@@ -4,18 +4,18 @@ class TasksController < ApplicationController
   def index
     @user = User.find(session[:user_id])
     @labels = @user.labels.map do |label|
-      label.name
+      label.id
     end
 
     if params[:search].present?
       status = params[:search][:status]
       title = params[:search][:title]
-      label = params[:search][:label]
+      label = params[:search][:label].to_i
 
       if status.present? && title.present?
 
         if label.present?
-          @tasks = @user.tasks.joins(:labels).where(labels: {name: label}).search_status(status).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+          @tasks = @user.tasks.joins(:labels).where(labels: {id: label}).search_status(status).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
         else
           @tasks = @user.tasks.search_status(status).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
         end
@@ -23,7 +23,7 @@ class TasksController < ApplicationController
       elsif status.present?
 
         if label.present?
-          @tasks = @user.tasks.joins(:labels).where(labels: {name: label}).search_status(status).order(created_at: :desc).page(params[:page]).per(10)
+          @tasks = @user.tasks.joins(:labels).where(labels: {id: label}).search_status(status).order(created_at: :desc).page(params[:page]).per(10)
         else
           @tasks = @user.tasks.search_status(status).order(created_at: :desc).page(params[:page]).per(10)
         end
@@ -31,13 +31,13 @@ class TasksController < ApplicationController
       elsif title.present?
 
         if label.present?
-          @tasks = @user.tasks.joins(:labels).where(labels: {name: label}).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
+          @tasks = @user.tasks.joins(:labels).where(labels: {id: label}).search_title(title).order(created_at: :desc).page(params[:page]).per(10)
         else
           @tasks = @user.tasks.search_title(title).order(created_at: :desc).page(params[:page]).per(10)
         end
 
       elsif label.present?
-        @tasks = @user.tasks.joins(:labels).where(labels: {name: label}).order(created_at: :desc).page(params[:page]).per(10)
+        @tasks = @user.tasks.joins(:labels).where(labels: {id: label}).order(created_at: :desc).page(params[:page]).per(10)
         
       else
         @tasks = @user.tasks.order(created_at: :desc).page(params[:page]).per(10)
